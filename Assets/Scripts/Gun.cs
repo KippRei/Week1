@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Reflection;
+using Unity.VisualScripting;
 
 public class Gun : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class Gun : MonoBehaviour
 
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
+    private List<GameObject> targetedEnemies = new List<GameObject>();
 
 
     void Update()
@@ -38,6 +40,7 @@ public class Gun : MonoBehaviour
             {
                 GameObject crosshairs = Instantiate(cross, hit.gameObject.transform.position, hit.gameObject.transform.rotation);
                 LockOnProjectile missile = Instantiate<LockOnProjectile>(lockOnProjectile, transform.position, transform.rotation);
+                crosshairs.transform.parent = hit.gameObject.transform;
                 missile.SetEnemy(hit.gameObject);
                 missile.SetCrosshairs(crosshairs);
             }
@@ -50,7 +53,13 @@ public class Gun : MonoBehaviour
             myTime = 0;
         }
 
-        if (Input.GetButton("Fire2") && mySuper > nextSuper)
+        // If Fire2 is held, enter targeting mode
+        if (Input.GetButton("Fire2"))
+        {
+            TargetMultiple();
+        }
+
+        if (Input.GetButtonUp("Fire2") && mySuper > nextSuper)
         {
             FireSuper();
             mySuper = 0;
@@ -63,28 +72,60 @@ public class Gun : MonoBehaviour
         float missileAngle = 0f;
         Quaternion launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
 
-        // Checks to see if enemy is clicked for missile lock-on
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hit = Physics2D.OverlapPoint(mousePos);
-        if (hit != null && hit.tag == "enemy")
-        {
-            for (int i = 0; i < superNum + 1; i++)
-            {
-                GameObject crosshairs = Instantiate(cross, hit.gameObject.transform.position, hit.gameObject.transform.rotation);
-                LockOnProjectile missile = Instantiate<LockOnProjectile>(lockOnProjectile, transform.position, launchAtAngle);
-                missile.SetEnemy(hit.gameObject);
-                missile.SetCrosshairs(crosshairs);
-                launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
-                missileAngle += missileAngleInterval;
-            }
-        }
-        else
+        if (targetedEnemies.Count == 0)
         {
             for (int i = 0; i < superNum + 1; i++)
             {
                 Instantiate(projectile, transform.position, launchAtAngle);
                 launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
                 missileAngle += missileAngleInterval;
+            }
+        }
+        else
+        {
+            int targetNum = targetedEnemies.Count;
+            int enemyTargeted = 0;
+            for (int i = 0; i < superNum + 1; i++)
+            {
+                LockOnProjectile missile = Instantiate<LockOnProjectile>(lockOnProjectile, transform.position, launchAtAngle);
+                GameObject crosshairs = Instantiate(cross, targetedEnemies[enemyTargeted].gameObject.transform.position, targetedEnemies[enemyTargeted].gameObject.transform.rotation);
+                crosshairs.transform.parent = targetedEnemies[enemyTargeted].gameObject.transform;
+                missile.SetEnemy(targetedEnemies[enemyTargeted]);
+                missile.SetCrosshairs(crosshairs);
+                launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
+                missileAngle += missileAngleInterval;
+                enemyTargeted++;
+
+                if (enemyTargeted >= targetNum)
+                {
+                    enemyTargeted = 0;
+                }
+            }
+        }
+    }
+
+    void TargetMultiple()
+    {
+        // Checks to see if enemy is clicked for missile lock-on
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(mousePos);
+        bool inList = false;
+        if (hit != null && hit.tag == "enemy")
+        {
+           foreach (GameObject enemy in targetedEnemies)
+            {
+                if (hit.gameObject.name == enemy.gameObject.name)
+                {
+                    inList = true;
+                }
+            }
+            if (inList == false)
+            {
+                targetedEnemies.Add(hit.gameObject);
+            }
+            else
+            {
+                inList = false;
             }
         }
     }

@@ -8,7 +8,7 @@ public class LockOnProjectile : MonoBehaviour
 {
     public float bulletVelocity = 25;
     public float maxBulletVelocity = 500;
-    public float delayToSeek = 0f;
+    public float delayToSeek = 0.2f;
     public float lockDistance = 1f;
 
     private Vector2 shootToward;
@@ -16,10 +16,12 @@ public class LockOnProjectile : MonoBehaviour
     private float maxTimeAlive = 4;
     private GameObject lockedOnEnemy;
     private GameObject cross;
+    private Rigidbody2D missileRB;
+    private bool hang = true;
 
     private void Start()
     {
-
+        missileRB = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -35,18 +37,25 @@ public class LockOnProjectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (timeAlive >= delayToSeek)
+       
+        if (timeAlive >= delayToSeek && lockedOnEnemy != null)
         {
-            SeekEnemy();
+            if (hang == true)
+            {
+                missileRB.velocity = Vector3.zero;
+                hang = false;
+            }
+           SeekEnemy();
         }
 
-        GetComponent<Rigidbody2D>().AddForce(transform.up * bulletVelocity);
+        missileRB.AddForce(transform.up * bulletVelocity);
     }
 
     void SeekEnemy()
     {
         Vector2 targetPosition = lockedOnEnemy.transform.position;
         Vector2 missilePosition = transform.position;
+
         float yCoord = targetPosition.y - missilePosition.y;
         float xCoord = targetPosition.x - missilePosition.x;
         float rotateToRad = Mathf.Atan(yCoord / xCoord);

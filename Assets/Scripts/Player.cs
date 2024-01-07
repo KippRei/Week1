@@ -28,23 +28,19 @@ public class Player : MonoBehaviour
 
         if (Input.GetButton("left") && camPos.x > 0)
         {
-            playerPosition.x -= movementSpeed;
-            gameObject.transform.position = playerPosition;
+            transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
         }
         else if (Input.GetButton("right") && camPos.x < 1)
         {
-            playerPosition.x += movementSpeed;
-            gameObject.transform.position = playerPosition;
+            transform.Translate(movementSpeed * Time.deltaTime, 0, 0);
         }
         if (Input.GetButton("up") && camPos.y < 1)
         {
-            playerPosition.y += movementSpeed;
-            gameObject.transform.position = playerPosition;
+            transform.Translate(0, movementSpeed * Time.deltaTime, 0);
         }
         else if (Input.GetButton("down") && camPos.y > 0)
         {
-            playerPosition.y -= movementSpeed;
-            gameObject.transform.position = playerPosition;
+            transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
         }
     }
 
