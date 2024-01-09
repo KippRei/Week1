@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class Projectile : MonoBehaviour
 {
     public float bulletVelocity = 25;
+    public TrailRenderer trail;
 
     private Vector2 shootToward;
     private float timeAlive = 0;
@@ -37,5 +38,11 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        trail.transform.parent = null;
+        trail.autodestruct = true;
     }
 }

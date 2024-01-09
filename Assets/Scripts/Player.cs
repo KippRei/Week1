@@ -5,8 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    [SerializeField]
-    float movementSpeed = 1;
+    public float movementSpeed = 1;
+
+    public bool playerShifted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
         {
             transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
         }
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
     }
 
     void PlayerRotate()
@@ -57,12 +59,16 @@ public class Player : MonoBehaviour
             toAdd = 90;
         }
         float rotateToDeg = rotateToRad * (180 / Mathf.PI) + toAdd;
-    /*    Debug.Log("Mouse Position x = " + mousePosition.x);
-        Debug.Log("Mouse Position y = " + mousePosition.y);
-        Debug.Log("Player Position x = " + playerPosition.x);
-        Debug.Log("Player Position y = " + playerPosition.y);
-        Debug.Log("Angle in Rads = " + rotateToRad);
-        Debug.Log("Angle in Degrees = " + rotateToDeg);*/
         transform.rotation = Quaternion.Euler(0, 0, rotateToDeg);
+    }
+
+    public void PlayerShift()
+    {
+        if (Input.GetButtonDown("Fire1") && !playerShifted)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = mousePos;
+            playerShifted = true;
+        }
     }
 }

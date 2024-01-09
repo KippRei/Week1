@@ -37,7 +37,7 @@ public class LockOnProjectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-       
+
         if (timeAlive >= delayToSeek && lockedOnEnemy != null)
         {
             if (hang == true)
@@ -45,7 +45,7 @@ public class LockOnProjectile : MonoBehaviour
                 missileRB.velocity = Vector3.zero;
                 hang = false;
             }
-           SeekEnemy();
+            SeekEnemy();
         }
 
         missileRB.AddForce(transform.up * bulletVelocity);

@@ -11,6 +11,7 @@ using Unity.VisualScripting;
 
 public class Gun : MonoBehaviour
 {
+    public Player player;
     public GameObject projectile;
     public LockOnProjectile lockOnProjectile;
     public float nextFire = 0.18f; // Time before next normal shot is allowed
@@ -20,20 +21,29 @@ public class Gun : MonoBehaviour
 
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
+    private bool shiftPos = false;
     private List<GameObject> targetedEnemies = new List<GameObject>();
-
+    private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
 
     void Update()
     {
-        
         myTime += Time.deltaTime;
         mySuper += Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && myTime > nextFire)
+        if (Input.GetButton("Fire3"))
         {
-            GunDirection(); 
+            shiftPos = true;
+        }
+        else
+        {
+            shiftPos = false;
+        }
 
-            // Checks to see if enemy is clicked for missile lock-on
+        if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos)
+        {
+            GunDirection();
+
+            /*// Checks to see if enemy is clicked for missile lock-on
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
             if (hit != null && hit.tag == "enemy")
@@ -47,20 +57,40 @@ public class Gun : MonoBehaviour
             else
             {
                 Instantiate(projectile, transform.position, transform.rotation);
-            }
+            }*/
 
+            Instantiate(projectile, transform.position, transform.rotation);
             // Reset timer for next shot
             myTime = 0;
         }
 
+        else if (Input.GetButton("Fire3"))
+        {
+            player.PlayerShift();
+        }
+        if (Input.GetButtonUp("Fire3"))
+        {
+            player.playerShifted = false;
+        }
+
         // If Fire2 is held, enter targeting mode
-        if (Input.GetButton("Fire2"))
+/*        if (Input.GetButton("Fire2"))
         {
             TargetMultiple();
         }
 
-        if (Input.GetButtonUp("Fire2") && mySuper > nextSuper)
+        if (Input.GetButtonDown("Fire2"))
         {
+            targetedEnemies.Clear();
+        }*/
+
+        if (Input.GetButton("Fire2") && mySuper > nextSuper && !shiftPos)
+        {
+            /*foreach (GameObject cross in crosses)
+            {
+                Destroy(cross);
+            }
+            crosses.Clear();*/
             FireSuper();
             mySuper = 0;
         }
@@ -121,6 +151,9 @@ public class Gun : MonoBehaviour
             }
             if (inList == false)
             {
+                GameObject crosshairs = Instantiate(cross, hit.gameObject.transform.position, hit.gameObject.transform.rotation);
+                crosshairs.transform.parent = hit.gameObject.transform;
+                crosses.Add(crosshairs);
                 targetedEnemies.Add(hit.gameObject);
             }
             else

@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         player = GameObject.Find("Player");
-       // transform.Translate(-(transform.position - player.transform.position).normalized * enemySpeed * Time.deltaTime);
+       transform.Translate(-(transform.position - player.transform.position).normalized * enemySpeed * Time.deltaTime);
         if (health <= 0)
         {
             GameObject.Find("GameLoop").GetComponent<SpawnEnemy>().EnemyDied();
@@ -39,8 +39,8 @@ public class Enemy : MonoBehaviour
     // TODO: check to ensure player projectile is what collides with enemy
     void OnTriggerEnter2D(Collider2D col)
     {
-        /*health -= 1;
+        health -= 1;
         healthBarLength -= healthBarIncrement;
-        healthBar.transform.localScale = new Vector3(healthBarLength, healthBar.transform.localScale.y, healthBar.transform.localScale.z);*/
+        healthBar.transform.localScale = new Vector3(healthBarLength, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
     }
 }
