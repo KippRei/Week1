@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class Enemy : MonoBehaviour
+public class BossEnemyOne : MonoBehaviour
 {
     public float enemySpeed = 0.7f;
     public static int idNum = 0;
+    public int bossHealth = 245;
 
     private GameObject player;
-    private int health = 12;
     private GameObject healthBar;
     private float healthBarLength;
     private float healthBarIncrement;
@@ -18,9 +18,9 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        healthBar = transform.Find("HealthBar").gameObject;
+        healthBar = transform.Find("BossHealthBar").gameObject;
         healthBarLength = healthBar.transform.localScale.x;
-        healthBarIncrement = healthBarLength / health;
+        healthBarIncrement = healthBarLength / bossHealth;
         idNum++;
     }
 
@@ -28,8 +28,8 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         player = GameObject.Find("Player");
-       //transform.Translate(-(transform.position - player.transform.position).normalized * enemySpeed * Time.deltaTime);
-        if (health <= 0)
+        //transform.Translate(-(transform.position - player.transform.position).normalized * enemySpeed * Time.deltaTime);
+        if (bossHealth <= 0)
         {
             //GameObject.Find("GameLoop").GetComponent<SpawnEnemy>().EnemyDied();
             Destroy(gameObject);
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
     {
         if (col.tag == "playerProjectile")
         {
-            health -= 1;
+            bossHealth -= 1;
             healthBarLength -= healthBarIncrement;
             healthBar.transform.localScale = new Vector3(healthBarLength, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Projectile : MonoBehaviour
+public class BossProjectile : MonoBehaviour
 {
     public float bulletVelocity = 25;
     public TrailRenderer trail;
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("enemy"))
+        if (col.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
         }

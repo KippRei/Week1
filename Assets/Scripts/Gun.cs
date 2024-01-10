@@ -18,12 +18,20 @@ public class Gun : MonoBehaviour
     public float nextSuper = 1.0f; // Time before next super is allowed
     public int superNum = 12;
     public GameObject cross;
+    public AudioClip shootSound;
+    public AudioClip superSound;
 
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
     private bool shiftPos = false;
     private List<GameObject> targetedEnemies = new List<GameObject>();
     private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -58,7 +66,7 @@ public class Gun : MonoBehaviour
             {
                 Instantiate(projectile, transform.position, transform.rotation);
             }*/
-
+            audioSource.PlayOneShot(shootSound);
             Instantiate(projectile, transform.position, transform.rotation);
             // Reset timer for next shot
             myTime = 0;
@@ -91,6 +99,7 @@ public class Gun : MonoBehaviour
                 Destroy(cross);
             }
             crosses.Clear();*/
+            audioSource.PlayOneShot(superSound);
             FireSuper();
             mySuper = 0;
         }
@@ -176,12 +185,6 @@ public class Gun : MonoBehaviour
             toAdd = 90;
         }
         float rotateToDeg = rotateToRad * (180 / Mathf.PI) + toAdd;
-        /*    Debug.Log("Mouse Position x = " + mousePosition.x);
-            Debug.Log("Mouse Position y = " + mousePosition.y);
-            Debug.Log("Player Position x = " + playerPosition.x);
-            Debug.Log("Player Position y = " + playerPosition.y);
-            Debug.Log("Angle in Rads = " + rotateToRad);
-            Debug.Log("Angle in Degrees = " + rotateToDeg);*/
         transform.rotation = Quaternion.Euler(0, 0, rotateToDeg);
     }
 }

@@ -6,13 +6,20 @@ public class Player : MonoBehaviour
 {
 
     public float movementSpeed = 1;
-
     public bool playerShifted = false;
+    public float accel = 1f;
+    public float decel = 2f;
+    public float maxSpeed = 3f;
+    public float deadzone = .1f;
+    public FollowPlayer followCam;
+    public int playerHealth;
+
+    private Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -20,6 +27,10 @@ public class Player : MonoBehaviour
     {
         //PlayerRotate();
         PlayerMove();
+        if (playerHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void PlayerMove()
@@ -43,6 +54,7 @@ public class Player : MonoBehaviour
         {
             transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
         }
+        
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
     }
 
@@ -69,6 +81,18 @@ public class Player : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePos;
             playerShifted = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "bossZone")
+        {
+            followCam.enteredBossZone = true;
+        }
+        if (col.tag == "enemyProjectile")
+        {
+            playerHealth -= 1;
         }
     }
 }
