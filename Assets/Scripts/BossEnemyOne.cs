@@ -8,16 +8,19 @@ public class BossEnemyOne : MonoBehaviour
     public float enemySpeed = 0.7f;
     public static int idNum = 0;
     public int bossHealth = 245;
+    public BossOneGun bossGun;
 
     private GameObject player;
     private GameObject healthBar;
     private float healthBarLength;
     private float healthBarIncrement;
+    private int fullHealth;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        fullHealth = bossHealth;
         healthBar = transform.Find("BossHealthBar").gameObject;
         healthBarLength = healthBar.transform.localScale.x;
         healthBarIncrement = healthBarLength / bossHealth;
@@ -33,6 +36,19 @@ public class BossEnemyOne : MonoBehaviour
         {
             //GameObject.Find("GameLoop").GetComponent<SpawnEnemy>().EnemyDied();
             Destroy(gameObject);
+        }
+
+        float lifeLeft = (float)bossHealth / (float)fullHealth;
+        Debug.Log(lifeLeft);
+        if (lifeLeft < 0.25)
+        {
+            bossGun.numOfSuperProj = 5;
+            bossGun.superProjInterval = 0.35f;
+        }
+        else if (lifeLeft < 0.5)
+        {
+            bossGun.numOfSuperProj = 4;
+            bossGun.superProjInterval = 0.5f;
         }
     }
 

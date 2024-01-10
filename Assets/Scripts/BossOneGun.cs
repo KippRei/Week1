@@ -13,6 +13,9 @@ public class BossOneGun : MonoBehaviour
 {
     public Player player;
     public GameObject bossProjectile;
+    public GameObject bossSuperProjectile;
+    public int numOfSuperProj = 3;
+    public float superProjInterval = 0.75f;
     public float bossFireRate = 0.3f; // Time before next normal boss shot
     public float nextBossSuper = 3.0f; // Time before next boss super is allowed
     public AudioClip shootSound;
@@ -38,11 +41,21 @@ public class BossOneGun : MonoBehaviour
             Instantiate(bossProjectile, transform.position, transform.rotation);
             bossTime = 0;
         }
+        if (bossSuper >= nextBossSuper)
+        {
+            StartCoroutine(FireSuper());
+        }
     }
 
-    void FireSuper()
+    IEnumerator FireSuper()
     {
-        // TODO: Implement boss super
+        for (int i = 0; i < numOfSuperProj; i++)
+        {
+            Instantiate(bossSuperProjectile, transform.position, transform.rotation);
+            bossSuper = 0;
+            yield return new WaitForSeconds(superProjInterval);
+        }
+        
     }
 
     void GunDirection()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -12,14 +13,20 @@ public class Player : MonoBehaviour
     public float maxSpeed = 3f;
     public float deadzone = .1f;
     public FollowPlayer followCam;
-    public int playerHealth;
+    public int playerHealth = 10;
+    public Slider healthBar;
+    public bool invincible = false;
 
+    [SerializeField] private UIScript uiScript;
     private Rigidbody2D rb;
+    private int fullHealth;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        fullHealth = playerHealth;
     }
 
     // Update is called once per frame
@@ -27,10 +34,19 @@ public class Player : MonoBehaviour
     {
         //PlayerRotate();
         PlayerMove();
+        float healthValue = (float)playerHealth / (float)fullHealth;
+        healthBar.value = healthValue;
+        Debug.Log(healthValue);
         if (playerHealth <= 0)
         {
-            Destroy(gameObject);
+            PlayerDie();
         }
+    }
+
+    void PlayerDie()
+    {
+        gameObject.SetActive(false);
+        uiScript.GameOver();
     }
 
     void PlayerMove()
@@ -90,9 +106,16 @@ public class Player : MonoBehaviour
         {
             followCam.enteredBossZone = true;
         }
-        if (col.tag == "enemyProjectile")
+        if (!invincible)
         {
-            playerHealth -= 1;
-        }
+            if (col.tag == "bossProjectile")
+            {
+                playerHealth -= 1;
+            }
+            if (col.tag == "bossSuper")
+            {
+                playerHealth -= 4;
+            }
+        }    
     }
 }

@@ -12,6 +12,12 @@ public class Projectile : MonoBehaviour
     private Vector2 shootToward;
     private float timeAlive = 0;
     private float maxTimeAlive = 2;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     private void Start()
     {
@@ -29,7 +35,7 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody2D>().AddForce(transform.up * bulletVelocity);
+        rb.AddForce(transform.up * bulletVelocity);
     }
 
     void OnTriggerEnter2D(Collider2D col)

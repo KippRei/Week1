@@ -38,6 +38,10 @@ public class BossProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (col.gameObject.CompareTag("playerProjectile"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnDestroy()
