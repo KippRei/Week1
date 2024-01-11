@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
     private float maxTimeAlive = 2;
     private Rigidbody2D rb;
 
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,6 +22,7 @@ public class Projectile : MonoBehaviour
 
     private void Start()
     {
+
     }
 
     void Update()
@@ -29,7 +31,7 @@ public class Projectile : MonoBehaviour
 
         if (timeAlive > maxTimeAlive)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -42,15 +44,15 @@ public class Projectile : MonoBehaviour
     {
         if (col.gameObject.CompareTag("enemy"))
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
-    private void OnDestroy()
+  /*  private void OnDisable()
     {
         trail.transform.parent = null;
         trail.autodestruct = true;
         Destroy(trail.gameObject, 0.6f);
         Destroy(gameObject);
-    }
+    }*/
 }

@@ -39,6 +39,7 @@ public class BossOneGun : MonoBehaviour
         if (bossTime >= bossFireRate)
         {
             Instantiate(bossProjectile, transform.position, transform.rotation);
+            audioSource.PlayOneShot(shootSound);
             bossTime = 0;
         }
         if (bossSuper >= nextBossSuper)
@@ -52,6 +53,7 @@ public class BossOneGun : MonoBehaviour
         for (int i = 0; i < numOfSuperProj; i++)
         {
             Instantiate(bossSuperProjectile, transform.position, transform.rotation);
+            audioSource.PlayOneShot(superSound);
             bossSuper = 0;
             yield return new WaitForSeconds(superProjInterval);
         }

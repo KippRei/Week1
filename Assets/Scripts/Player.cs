@@ -16,16 +16,20 @@ public class Player : MonoBehaviour
     public int playerHealth = 10;
     public Slider healthBar;
     public bool invincible = false;
+    public AudioClip playerHitSound;
 
     [SerializeField] private UIScript uiScript;
+    private AudioSource audioSource;
     private Rigidbody2D rb;
     private int fullHealth;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         fullHealth = playerHealth;
     }
 
@@ -36,7 +40,7 @@ public class Player : MonoBehaviour
         PlayerMove();
         float healthValue = (float)playerHealth / (float)fullHealth;
         healthBar.value = healthValue;
-        Debug.Log(healthValue);
+
         if (playerHealth <= 0)
         {
             PlayerDie();
@@ -110,10 +114,12 @@ public class Player : MonoBehaviour
         {
             if (col.tag == "bossProjectile")
             {
+                audioSource.PlayOneShot(playerHitSound);
                 playerHealth -= 1;
             }
             if (col.tag == "bossSuper")
             {
+                audioSource.PlayOneShot(playerHitSound);
                 playerHealth -= 4;
             }
         }    

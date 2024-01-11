@@ -48,6 +48,6 @@ public class SlowMotion : MonoBehaviour
                 slowMoAvailable = true;
             }
         }
-        Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
+        //Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale; TODO: do I need this?
     }
 }

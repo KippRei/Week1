@@ -21,12 +21,15 @@ public class Gun : MonoBehaviour
     public AudioClip shootSound;
     public AudioClip superSound;
 
+    private Queue<GameObject> projectiles = new Queue<GameObject>();
+    private List<GameObject> projectilesFired = new List<GameObject>();
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
     private bool shiftPos = false;
     private List<GameObject> targetedEnemies = new List<GameObject>();
     private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
     private AudioSource audioSource;
+
 
     private void Start()
     {
@@ -45,6 +48,20 @@ public class Gun : MonoBehaviour
         else
         {
             shiftPos = false;
+        }
+
+        if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))
+        {
+            Debug.Log(projectiles.Count);
+
+            foreach (GameObject p in projectilesFired)
+            {
+                if (!p.activeInHierarchy)
+                {
+                    projectiles.Enqueue(p);
+                    projectilesFired.Remove(p);
+                }
+            }
         }
 
         if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos)
@@ -66,8 +83,22 @@ public class Gun : MonoBehaviour
             {
                 Instantiate(projectile, transform.position, transform.rotation);
             }*/
-            audioSource.PlayOneShot(shootSound);
-            Instantiate(projectile, transform.position, transform.rotation);
+            if (projectiles.Count > 0)
+            {
+                //Debug.Log("from stack");
+                GameObject missile = projectiles.Dequeue();
+                missile.transform.position = transform.position;
+                audioSource.PlayOneShot(shootSound);
+                missile.SetActive(true);
+                projectilesFired.Add(missile);
+            }
+            else
+            {
+                //Debug.Log("new");
+                audioSource.PlayOneShot(shootSound);
+                projectilesFired.Add(Instantiate(projectile, transform.position, transform.rotation));
+            }
+
             // Reset timer for next shot
             myTime = 0;
         }
@@ -111,7 +142,14 @@ public class Gun : MonoBehaviour
         float missileAngle = 0f;
         Quaternion launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
 
-        if (targetedEnemies.Count == 0)
+        for (int i = 0; i < superNum + 1; i++)
+        {
+            Instantiate(projectile, transform.position, launchAtAngle);
+            launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
+            missileAngle += missileAngleInterval;
+        }
+
+       /* if (targetedEnemies.Count == 0)
         {
             for (int i = 0; i < superNum + 1; i++)
             {
@@ -140,7 +178,7 @@ public class Gun : MonoBehaviour
                     enemyTargeted = 0;
                 }
             }
-        }
+        }*/
     }
 
     void TargetMultiple()

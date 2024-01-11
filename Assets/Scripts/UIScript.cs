@@ -19,8 +19,8 @@ public class UIScript : MonoBehaviour
     {
         if (restart && Input.GetButton("Fire3"))
         {
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
-            SceneManager.LoadSceneAsync("Level1");
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
         }   
     }
 

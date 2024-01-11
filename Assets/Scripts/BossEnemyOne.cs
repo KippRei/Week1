@@ -15,6 +15,7 @@ public class BossEnemyOne : MonoBehaviour
     private float healthBarLength;
     private float healthBarIncrement;
     private int fullHealth;
+    [SerializeField] private FollowPlayer cameraScript;
 
 
     // Start is called before the first frame update
@@ -35,11 +36,12 @@ public class BossEnemyOne : MonoBehaviour
         if (bossHealth <= 0)
         {
             //GameObject.Find("GameLoop").GetComponent<SpawnEnemy>().EnemyDied();
+            cameraScript.bossAlive = false;
             Destroy(gameObject);
         }
 
         float lifeLeft = (float)bossHealth / (float)fullHealth;
-        Debug.Log(lifeLeft);
+
         if (lifeLeft < 0.25)
         {
             bossGun.numOfSuperProj = 5;
