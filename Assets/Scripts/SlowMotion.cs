@@ -19,7 +19,7 @@ public class SlowMotion : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        fixedDeltaTime = Time.fixedDeltaTime;
+        fixedDeltaTime = 0.02f;
     }
 
     // Update is called once per frame
@@ -48,6 +48,6 @@ public class SlowMotion : MonoBehaviour
                 slowMoAvailable = true;
             }
         }
-        //Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale; TODO: do I need this?
+        Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
     }
 }
