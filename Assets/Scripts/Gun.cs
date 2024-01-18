@@ -52,8 +52,6 @@ public class Gun : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))
         {
-            Debug.Log(projectiles.Count);
-
             foreach (GameObject p in projectilesFired)
             {
                 if (!p.activeInHierarchy)

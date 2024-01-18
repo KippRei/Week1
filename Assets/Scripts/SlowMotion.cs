@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SlowMotion : MonoBehaviour
 {
+    public UIScript gameLoop;
     public float slowMoSpeed = 0.2f;
     public float slowMoRegen = 0.002f;
     public float slowMoDrain = 0.0015f;
@@ -25,29 +26,32 @@ public class SlowMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire3") && slowMoAvailable)
+        if (!gameLoop.GamePaused())
         {
-            Time.timeScale = slowMoSpeed;
-            slowMoSlider.value -= slowMoDrain;
-            player.invincible = true;
-            if (slowMoSlider.value < 0.01 || Input.GetButtonUp("Fire1"))
+            if (Input.GetButton("Fire3") && slowMoAvailable)
             {
-                slowMoAvailable = false;
+                Time.timeScale = slowMoSpeed;
+                slowMoSlider.value -= slowMoDrain;
+                player.invincible = true;
+                if (slowMoSlider.value < 0.01 || Input.GetButtonUp("Fire1"))
+                {
+                    slowMoAvailable = false;
+                }
             }
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            player.invincible = false;
-            if (slowMoSlider.value < 1f)
+            else
             {
-                slowMoSlider.value += slowMoRegen;
+                Time.timeScale = 1.0f;
+                player.invincible = false;
+                if (slowMoSlider.value < 1f)
+                {
+                    slowMoSlider.value += slowMoRegen;
+                }
+                if (slowMoSlider.value >= 0.99f)
+                {
+                    slowMoAvailable = true;
+                }
             }
-            if (slowMoSlider.value >= 0.99f)
-            {
-                slowMoAvailable = true;
-            }
-        }
-        Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
+            Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
+        }      
     }
 }
