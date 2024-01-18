@@ -9,6 +9,7 @@ TagManager:
   - bossZone
   - bossProjectile
   - bossSuper
+  - doNotPass
   layers:
   - Default
   - TransparentFX

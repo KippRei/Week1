@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
 
         if (timeAlive > maxTimeAlive)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 
@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour
     {
         if (col.gameObject.CompareTag("enemy"))
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 

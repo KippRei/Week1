@@ -44,22 +44,16 @@ public class Gun : MonoBehaviour
         if (Input.GetButton("Fire3"))
         {
             shiftPos = true;
+            player.PlayerShift();
         }
         else
         {
             shiftPos = false;
         }
 
-        if (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2"))
+        if (Input.GetButtonUp("Fire3"))
         {
-            foreach (GameObject p in projectilesFired)
-            {
-                if (!p.activeInHierarchy)
-                {
-                    projectiles.Enqueue(p);
-                    projectilesFired.Remove(p);
-                }
-            }
+            player.playerShifted = false;
         }
 
         if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos)
@@ -81,33 +75,12 @@ public class Gun : MonoBehaviour
             {
                 Instantiate(projectile, transform.position, transform.rotation);
             }*/
-            if (projectiles.Count > 0)
-            {
-                //Debug.Log("from stack");
-                GameObject missile = projectiles.Dequeue();
-                missile.transform.position = transform.position;
-                audioSource.PlayOneShot(shootSound);
-                missile.SetActive(true);
-                projectilesFired.Add(missile);
-            }
-            else
-            {
-                //Debug.Log("new");
-                audioSource.PlayOneShot(shootSound);
-                projectilesFired.Add(Instantiate(projectile, transform.position, transform.rotation));
-            }
+            
+            audioSource.PlayOneShot(shootSound);
+            projectilesFired.Add(Instantiate(projectile, transform.position, transform.rotation));
 
             // Reset timer for next shot
             myTime = 0;
-        }
-
-        else if (Input.GetButton("Fire3"))
-        {
-            player.PlayerShift();
-        }
-        if (Input.GetButtonUp("Fire3"))
-        {
-            player.playerShifted = false;
         }
 
         // If Fire2 is held, enter targeting mode

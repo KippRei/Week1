@@ -19,6 +19,10 @@ public class Player : MonoBehaviour
     public AudioClip playerHitSound;
 
     [SerializeField] private UIScript uiScript;
+    [SerializeField] private PlayerSideDetector leftSide;
+    [SerializeField] private PlayerSideDetector rightSide;
+    [SerializeField] private PlayerSideDetector upSide;
+    [SerializeField] private PlayerSideDetector downSide;
     private AudioSource audioSource;
     private Rigidbody2D rb;
     private int fullHealth;
@@ -58,19 +62,19 @@ public class Player : MonoBehaviour
         Vector3 camPos = Camera.main.WorldToViewportPoint(transform.position);
         Vector3 playerPosition = gameObject.transform.position;
 
-        if (Input.GetButton("left") && camPos.x > 0)
+        if (Input.GetButton("left") && camPos.x > 0 && !leftSide.contact)
         {
             transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
         }
-        else if (Input.GetButton("right") && camPos.x < 1)
+        else if (Input.GetButton("right") && camPos.x < 1 && !rightSide.contact)
         {
             transform.Translate(movementSpeed * Time.deltaTime, 0, 0);
         }
-        if (Input.GetButton("up") && camPos.y < 1)
+        if (Input.GetButton("up") && camPos.y < 1 && !upSide.contact)
         {
             transform.Translate(0, movementSpeed * Time.deltaTime, 0);
         }
-        else if (Input.GetButton("down") && camPos.y > 0)
+        else if (Input.GetButton("down") && camPos.y > 0 && !downSide.contact)
         {
             transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
         }
