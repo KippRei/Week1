@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     public FollowPlayer followCam;
     public int playerHealth = 10;
     public Slider healthBar;
+    public TextMeshProUGUI treasureNum;
     public bool invincible = false;
     public AudioClip playerHitSound;
 
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
     private AudioSource audioSource;
     private Rigidbody2D rb;
     private int fullHealth;
-
+    private int treasureVal = 0;
 
 
     // Start is called before the first frame update
@@ -126,6 +128,16 @@ public class Player : MonoBehaviour
                 audioSource.PlayOneShot(playerHitSound);
                 playerHealth -= 4;
             }
-        }    
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "treasure")
+        {
+            Debug.Log("coin");
+            treasureVal++;
+            treasureNum.text = treasureVal.ToString();
+        }
     }
 }

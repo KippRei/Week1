@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8185889916242232291}
   - component: {fileID: 3477906753749546772}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: -8805736032314446815}
   - component: {fileID: 4863026968182584553}
   - component: {fileID: 9021193031889984544}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LockOnBullet
   m_TagString: playerProjectile
   m_Icon: {fileID: 0}

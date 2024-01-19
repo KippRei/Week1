@@ -537,6 +537,7 @@ MonoBehaviour:
   followCam: {fileID: 0}
   playerHealth: 10
   healthBar: {fileID: 0}
+  treasureNum: {fileID: 0}
   invincible: 0
   playerHitSound: {fileID: 8300000, guid: c3a945626d8b2684ab660a880c9a890f, type: 3}
   uiScript: {fileID: 0}
@@ -593,7 +594,7 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 119
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 4294967295

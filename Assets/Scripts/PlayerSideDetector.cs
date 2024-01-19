@@ -17,13 +17,14 @@ public class PlayerSideDetector : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTrigger2D(Collider2D col)
     {
+        Debug.Log(col.gameObject.tag);
         if (col.gameObject.tag == "doNotPass")
         {
-            Debug.Log(gameObject.name);
+            Debug.Log(col.gameObject.tag);
+            contact = true;
         }
-        contact = true;
     }
 
     private void OnTriggerExit2D(Collider2D col)
