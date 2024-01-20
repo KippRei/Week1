@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour
 {
     public Player player;
     public GameObject projectile;
+    public GameObject terrainBlock;
     public LockOnProjectile lockOnProjectile;
     public float nextFire = 0.18f; // Time before next normal shot is allowed
     public float nextSuper = 1.0f; // Time before next super is allowed
@@ -26,6 +27,7 @@ public class Gun : MonoBehaviour
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
     private bool shiftPos = false;
+    public bool build = false;
     private List<GameObject> targetedEnemies = new List<GameObject>();
     private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
     private AudioSource audioSource;
@@ -41,22 +43,41 @@ public class Gun : MonoBehaviour
         myTime += Time.deltaTime;
         mySuper += Time.deltaTime;
 
-        if (Input.GetButton("Fire3"))
-        {
-            shiftPos = true;
-            player.PlayerShift();
-        }
-        else
-        {
-            shiftPos = false;
-        }
+        CheckSlowMoButton();
+        CheckBuildButton();
+        CheckFireButton();
+        CheckSuperButton();
+    }
 
-        if (Input.GetButtonUp("Fire3"))
-        {
-            player.playerShifted = false;
-        }
+    private void CheckSuperButton()
+    {
+        // If Fire2 is held, enter targeting mode
+        /*        if (Input.GetButton("Fire2"))
+                {
+                    TargetMultiple();
+                }
 
-        if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos)
+                if (Input.GetButtonDown("Fire2"))
+                {
+                    targetedEnemies.Clear();
+                }*/
+
+        if (Input.GetButton("Fire2") && mySuper > nextSuper && !shiftPos)
+        {
+            /*foreach (GameObject cross in crosses)
+            {
+                Destroy(cross);
+            }
+            crosses.Clear();*/
+            audioSource.PlayOneShot(superSound);
+            FireSuper();
+            mySuper = 0;
+        }
+    }
+
+    private void CheckFireButton()
+    {
+        if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos && !build)
         {
             GunDirection();
 
@@ -75,35 +96,49 @@ public class Gun : MonoBehaviour
             {
                 Instantiate(projectile, transform.position, transform.rotation);
             }*/
-            
+
             audioSource.PlayOneShot(shootSound);
-            projectilesFired.Add(Instantiate(projectile, transform.position, transform.rotation));
+            Instantiate(projectile, transform.position, transform.rotation);
 
             // Reset timer for next shot
             myTime = 0;
         }
 
-        // If Fire2 is held, enter targeting mode
-/*        if (Input.GetButton("Fire2"))
+        if (Input.GetButtonDown("Fire1") && !shiftPos && build)
         {
-            TargetMultiple();
+            GunDirection();
+            Quaternion rotateTo = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90);
+            Instantiate(terrainBlock, transform.position, rotateTo);
+        }
+    }
+
+    private void CheckBuildButton()
+    {
+        if (Input.GetButton("build"))
+        {
+            build = true;
+        }
+        else
+        {
+            build = false;
+        }
+    }
+
+    private void CheckSlowMoButton()
+    {
+        if (Input.GetButton("Fire3"))
+        {
+            shiftPos = true;
+            player.PlayerShift();
+        }
+        else
+        {
+            shiftPos = false;
         }
 
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonUp("Fire3"))
         {
-            targetedEnemies.Clear();
-        }*/
-
-        if (Input.GetButton("Fire2") && mySuper > nextSuper && !shiftPos)
-        {
-            /*foreach (GameObject cross in crosses)
-            {
-                Destroy(cross);
-            }
-            crosses.Clear();*/
-            audioSource.PlayOneShot(superSound);
-            FireSuper();
-            mySuper = 0;
+            player.playerShifted = false; // Let's player know to reset phase shift counter (default 1 phase shift per slow-mo button press)
         }
     }
 
@@ -115,7 +150,7 @@ public class Gun : MonoBehaviour
 
         for (int i = 0; i < superNum + 1; i++)
         {
-            Instantiate(projectile, transform.position, launchAtAngle);
+            Instantiate(projectile, player.transform.position, launchAtAngle);
             launchAtAngle = Quaternion.Euler(0, 0, missileAngle);
             missileAngle += missileAngleInterval;
         }
