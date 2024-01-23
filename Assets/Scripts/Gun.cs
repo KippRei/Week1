@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Reflection;
 using Unity.VisualScripting;
+using TMPro;
 
 public class Gun : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Gun : MonoBehaviour
     public GameObject cross;
     public AudioClip shootSound;
     public AudioClip superSound;
+    public TextMeshProUGUI shieldCountDisp;
 
     private Queue<GameObject> projectiles = new Queue<GameObject>();
     private List<GameObject> projectilesFired = new List<GameObject>();
@@ -31,11 +33,14 @@ public class Gun : MonoBehaviour
     private List<GameObject> targetedEnemies = new List<GameObject>();
     private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
     private AudioSource audioSource;
+    
+    public int shieldCount = 0; // Used by PlayerShield
 
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        shieldCountDisp.text = shieldCount.ToString();
     }
 
     void Update()
@@ -103,20 +108,18 @@ public class Gun : MonoBehaviour
             // Reset timer for next shot
             myTime = 0;
         }
-
-        if (Input.GetButtonDown("Fire1") && !shiftPos && build)
-        {
-            GunDirection();
-            Quaternion rotateTo = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90);
-            Instantiate(terrainBlock, transform.position, rotateTo);
-        }
     }
 
     private void CheckBuildButton()
     {
-        if (Input.GetButton("build"))
+        if (Input.GetButton("build") && shieldCount == 0)
         {
             build = true;
+            shieldCount++;
+            shieldCountDisp.text = shieldCount.ToString();
+            GunDirection();
+            Quaternion rotateTo = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90);
+            Instantiate(terrainBlock, transform.position, rotateTo);
         }
         else
         {

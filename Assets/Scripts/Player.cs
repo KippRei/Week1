@@ -112,32 +112,32 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "bossZone")
+        if (col.gameObject.CompareTag("bossZone"))
         {
             followCam.enteredBossZone = true;
         }
-        if (!invincible)
-        {
-            if (col.tag == "bossProjectile")
-            {
-                audioSource.PlayOneShot(playerHitSound);
-                playerHealth -= 1;
-            }
-            if (col.tag == "bossSuper")
-            {
-                audioSource.PlayOneShot(playerHitSound);
-                playerHealth -= 4;
-            }
-        }
+ 
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "treasure")
+        if (col.gameObject.CompareTag("treasure"))
         {
-            Debug.Log("coin");
             treasureVal++;
             treasureNum.text = treasureVal.ToString();
+        }
+        if (!invincible)
+        {
+            if (col.gameObject.CompareTag("bossProjectile"))
+            {
+                audioSource.PlayOneShot(playerHitSound);
+                playerHealth -= 1;
+            }
+            if (col.gameObject.CompareTag("bossSuper"))
+            {
+                audioSource.PlayOneShot(playerHitSound);
+                playerHealth -= 4;
+            }
         }
     }
 }

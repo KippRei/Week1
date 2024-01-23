@@ -32,7 +32,7 @@ public class BossProjectile : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(transform.up * bulletVelocity);
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
@@ -42,13 +42,15 @@ public class BossProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (col.gameObject.CompareTag("playerShield"))
+        {
+            Destroy(gameObject);
+        }
     }
 
-    private void OnDestroy()
-    {
-        trail.transform.parent = null;
-        trail.autodestruct = true;
-        Destroy(trail.gameObject, 0.6f);
-        Destroy(gameObject);
-    }
+    /*    private void OnDestroy()
+        {
+            trail.transform.parent = null;
+            trail.autodestruct = true;
+        }*/
 }

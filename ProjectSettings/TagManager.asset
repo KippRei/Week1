@@ -11,6 +11,7 @@ TagManager:
   - bossSuper
   - doNotPass
   - treasure
+  - playerShield
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - UI
   - Projectiles
   - Treasure
-  - 
+  - Player
   - 
   - 
   - 

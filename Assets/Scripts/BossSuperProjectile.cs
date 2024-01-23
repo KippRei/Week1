@@ -31,4 +31,12 @@ public class BossSuperProjectile : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(transform.up * bossSuperSpeed);
         transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(2.5f, transform.localScale.y, 0), .1f);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("playerShield"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

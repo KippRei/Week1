@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2171879354344876014}
   m_Layer: 0
   m_Name: Shield
-  m_TagString: Untagged
+  m_TagString: playerShield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,7 +109,7 @@ Rigidbody2D:
     m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -146,8 +146,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.13248874, y: 0}
-  m_Size: {x: 1.505869, y: 2}
+  m_Offset: {x: -0.048173543, y: 0}
+  m_Size: {x: 2.1080801, y: 2}
   m_Direction: 0
 --- !u!114 &-2171879354344876014
 MonoBehaviour:
@@ -161,3 +161,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733992ddff34f914883b56d4bc33d7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldHP: 15

@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 1247242280850561785}
   - component: {fileID: 9200816169789217067}
   - component: {fileID: -8805736032314446815}
-  - component: {fileID: 4863026968182584553}
+  - component: {fileID: 6117050355587274873}
   - component: {fileID: -6822286587184787612}
   m_Layer: 0
   m_Name: Boss Projectile
@@ -251,8 +251,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &4863026968182584553
-CircleCollider2D:
+--- !u!70 &6117050355587274873
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -270,22 +270,22 @@ CircleCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 4294967295
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.04
+  m_Offset: {x: -0.0016037154, y: -0.17673002}
+  m_Size: {x: 0.12356654, y: 0.45999998}
+  m_Direction: 0
 --- !u!114 &-6822286587184787612
 MonoBehaviour:
   m_ObjectHideFlags: 0
