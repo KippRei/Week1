@@ -28,7 +28,7 @@ public class SlowMotion : MonoBehaviour
     {
         if (!gameLoop.GamePaused())
         {
-            if (Input.GetButton("Fire3") && slowMoAvailable)
+            if (Input.GetButtonDown("Fire3") && slowMoAvailable)
             {
                 Time.timeScale = slowMoSpeed;
                 slowMoSlider.value -= slowMoDrain;
@@ -38,7 +38,7 @@ public class SlowMotion : MonoBehaviour
                     slowMoAvailable = false;
                 }
             }
-            else
+            if (Input.GetButtonUp("Fire3"))
             {
                 Time.timeScale = 1.0f;
                 player.invincible = false;

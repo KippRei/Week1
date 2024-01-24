@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8776668621218862096}
   - component: {fileID: 7197065045368604978}
   - component: {fileID: 3491327551469206162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: 8275cd37d88d2634e87fd0924d4c01a1, type: 3}
   superSound: {fileID: 8300000, guid: 3b55556d3bac17448b9361c68aaf9f94, type: 3}
   shieldCountDisp: {fileID: 0}
-  build: 0
+  maxShields: 2
   shieldCount: 0
 --- !u!82 &7197065045368604978
 AudioSource:
@@ -217,7 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3960573136477566909}
   - component: {fileID: 6685625661549353187}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 1901293699658874513}
   - component: {fileID: 1777986437312144936}
   - component: {fileID: 1700402794508144961}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DownSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 7844857470383874235}
   - component: {fileID: 6025073488244663457}
   - component: {fileID: 5545631643809346180}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UpSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 4918335390406145463}
   - component: {fileID: 2160156371041745455}
   - component: {fileID: 886350466868998526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 5527882970169376811}
   - component: {fileID: 6342630237707963582}
   - component: {fileID: 3028085106147102132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 4153204886151168541}
   - component: {fileID: 6924410936714693479}
   - component: {fileID: 8185460627608373462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

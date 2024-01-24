@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3768001795604875454}
   - component: {fileID: 3003370874865929713}
   - component: {fileID: 1535892846951546218}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Boss1
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -105,6 +105,7 @@ MonoBehaviour:
   enemySpeed: 0.7
   bossHealth: 245
   bossGun: {fileID: 0}
+  cameraScript: {fileID: 0}
 --- !u!50 &3768001795604875454
 Rigidbody2D:
   serializedVersion: 4
@@ -182,6 +183,7 @@ MonoBehaviour:
   enemySpeed: 0.7
   bossHealth: 245
   bossGun: {fileID: 1026736204534567414}
+  cameraScript: {fileID: 0}
 --- !u!1 &6478882512404757290
 GameObject:
   m_ObjectHideFlags: 0

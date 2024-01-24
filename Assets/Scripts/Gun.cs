@@ -23,13 +23,13 @@ public class Gun : MonoBehaviour
     public AudioClip shootSound;
     public AudioClip superSound;
     public TextMeshProUGUI shieldCountDisp;
+    public int maxShields = 2;
 
     private Queue<GameObject> projectiles = new Queue<GameObject>();
     private List<GameObject> projectilesFired = new List<GameObject>();
     private float myTime = 0.0f;
     private float mySuper = 0.0f;
     private bool shiftPos = false;
-    public bool build = false;
     private List<GameObject> targetedEnemies = new List<GameObject>();
     private List<GameObject> crosses = new List<GameObject>(); // TODO: This is a hacky way of showing crosses when targeting that can later be erased, needs work
     private AudioSource audioSource;
@@ -49,7 +49,7 @@ public class Gun : MonoBehaviour
         mySuper += Time.deltaTime;
 
         CheckSlowMoButton();
-        CheckBuildButton();
+        CheckShieldButton();
         CheckFireButton();
         CheckSuperButton();
     }
@@ -82,7 +82,7 @@ public class Gun : MonoBehaviour
 
     private void CheckFireButton()
     {
-        if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos && !build)
+        if (Input.GetButton("Fire1") && myTime > nextFire && !shiftPos)
         {
             GunDirection();
 
@@ -110,20 +110,15 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void CheckBuildButton()
+    private void CheckShieldButton()
     {
-        if (Input.GetButton("build") && shieldCount == 0)
+        if (Input.GetButtonDown("shield") && shieldCount < maxShields)
         {
-            build = true;
             shieldCount++;
             shieldCountDisp.text = shieldCount.ToString();
             GunDirection();
             Quaternion rotateTo = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + 90);
             Instantiate(terrainBlock, transform.position, rotateTo);
-        }
-        else
-        {
-            build = false;
         }
     }
 

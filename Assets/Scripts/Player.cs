@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI treasureNum;
     public bool invincible = false;
     public AudioClip playerHitSound;
+    public float freezeOnHit = 1f;
 
     [SerializeField] private UIScript uiScript;
     [SerializeField] private PlayerSideDetector leftSide;
@@ -132,12 +133,19 @@ public class Player : MonoBehaviour
             {
                 audioSource.PlayOneShot(playerHitSound);
                 playerHealth -= 1;
+                PlayerHit();
             }
             if (col.gameObject.CompareTag("bossSuper"))
             {
                 audioSource.PlayOneShot(playerHitSound);
                 playerHealth -= 4;
+                PlayerHit();
             }
         }
+    }
+
+    private void PlayerHit()
+    {
+        followCam.Shake();
     }
 }

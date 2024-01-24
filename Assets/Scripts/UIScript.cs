@@ -10,6 +10,8 @@ public class UIScript : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private GameObject loadScreen;
+    [SerializeField] private TextMeshProUGUI loadingPercentage;
     private bool restart = false;
     private bool paused = false;
     private Animator continueBtn;
@@ -38,16 +40,31 @@ public class UIScript : MonoBehaviour
         if (Input.GetButtonDown("pause") && !paused)
         {
             paused = true;
+            PauseGame();
         }
         else if (Input.GetButtonDown("pause") && paused)
         {
             paused = false;
+            PauseGame();
         }
-        if (restart && Input.GetButton("Fire3"))
+        if (restart && Input.GetButtonDown("Fire3"))
         {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+            StartCoroutine(ReloadLevel());  
+        }   
+    }
+
+    IEnumerator ReloadLevel()
+    {
+        Time.timeScale = 1f;
+        loadScreen.SetActive(true);
+        AsyncOperation loadingLvl = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+
+        while (!loadingLvl.isDone)
+        {
+            loadingPercentage.text = Mathf.Clamp01(loadingLvl.progress / 0.9f) * 100 + " %";
+            yield return null;
         }
-        PauseGame();
+        loadScreen.SetActive(false);
     }
 
     private void PauseGame()

@@ -32,7 +32,7 @@ public class BossSuperProjectile : MonoBehaviour
         transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(2.5f, transform.localScale.y, 0), .1f);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("playerShield"))
         {

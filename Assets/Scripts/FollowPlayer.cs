@@ -14,6 +14,8 @@ public class FollowPlayer : MonoBehaviour
     public bool bossAlive = true;
     public float lerpTime = 0.3f;
     public float lookAheadDist = 2f; // How far the camera moves in direction of player movement
+    public float shakeTime = 0.1f;
+    public float shakeIntensity = 0.2f;
 
     private Vector3 bossCamPos = new Vector3(16.9f, 12.5f, -10);
     private bool cameraLeft = false;
@@ -30,67 +32,71 @@ public class FollowPlayer : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        /*        if (Mathf.Abs(transform.position.x - player.gameObject.transform.position.x) > deadzone || Mathf.Abs(transform.position.y - player.gameObject.transform.position.y) > deadzone)
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.gameObject.transform.position.x, player.gameObject.transform.position.y, -10), cameraSpeed);
-                }*/
         if (freeMovement)
         {
-            if (Input.GetButtonDown("left"))
+            if (Mathf.Abs(transform.position.x - player.gameObject.transform.position.x) > deadzone || Mathf.Abs(transform.position.y - player.gameObject.transform.position.y) > deadzone)
             {
-                cameraRight = false;
-                cameraLeft = true;
-                xDistToTravel = player.gameObject.transform.localScale.x + lookAheadDist;
-                startTime = Time.time;
-            }
-            else if (Input.GetButtonDown("right"))
-            {
-                cameraLeft = false;
-                cameraRight = true;
-                xDistToTravel = player.gameObject.transform.localScale.x + lookAheadDist;
-                startTime = Time.time;
-            }
-
-            if (Input.GetButtonDown("up"))
-            {
-                cameraDown = false;
-                cameraUp = true;
-                yDistToTravel = player.gameObject.transform.localScale.y + lookAheadDist;
-                startTime = Time.time;
-            }
-            else if (Input.GetButtonDown("down"))
-            {
-                cameraUp = false;
-                cameraDown = true;
-                yDistToTravel = player.gameObject.transform.localScale.y + lookAheadDist;
-                startTime = Time.time;
-            }
-
-            if (cameraLeft && transform.position.x > player.gameObject.transform.position.x - lookAheadDist)
-            {
-                float distCovered = (Time.time - startTime) * lerpTime;
-                float fractionOfJourney = distCovered / xDistToTravel;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(player.gameObject.transform.position.x - lookAheadDist, player.gameObject.transform.position.y, transform.position.z), fractionOfJourney);
-            }
-            else if (cameraRight && transform.position.x < player.gameObject.transform.position.x + lookAheadDist)
-            {
-                float distCovered = (Time.time - startTime) * lerpTime;
-                float fractionOfJourney = distCovered / xDistToTravel;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(player.gameObject.transform.position.x + lookAheadDist, player.gameObject.transform.position.y, transform.position.z), fractionOfJourney);
-            }
-            if (cameraUp && transform.position.y < player.gameObject.transform.position.y + lookAheadDist)
-            {
-                float distCovered = (Time.time - startTime) * lerpTime;
-                float fractionOfJourney = distCovered / yDistToTravel;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, player.gameObject.transform.position.y + lookAheadDist, transform.position.z), fractionOfJourney);
-            }
-            else if (cameraDown && transform.position.y > player.gameObject.transform.position.y - lookAheadDist)
-            {
-                float distCovered = (Time.time - startTime) * lerpTime;
-                float fractionOfJourney = distCovered / yDistToTravel;
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, player.gameObject.transform.position.y - lookAheadDist, transform.position.z), fractionOfJourney);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(player.gameObject.transform.position.x, player.gameObject.transform.position.y, -10), cameraSpeed);
             }
         }
+
+        /* if (freeMovement)
+         {
+             if (Input.GetButtonDown("left"))
+             {
+                 cameraRight = false;
+                 cameraLeft = true;
+                 xDistToTravel = player.gameObject.transform.localScale.x + lookAheadDist;
+                 startTime = Time.time;
+             }
+             else if (Input.GetButtonDown("right"))
+             {
+                 cameraLeft = false;
+                 cameraRight = true;
+                 xDistToTravel = player.gameObject.transform.localScale.x + lookAheadDist;
+                 startTime = Time.time;
+             }
+
+             if (Input.GetButtonDown("up"))
+             {
+                 cameraDown = false;
+                 cameraUp = true;
+                 yDistToTravel = player.gameObject.transform.localScale.y + lookAheadDist;
+                 startTime = Time.time;
+             }
+             else if (Input.GetButtonDown("down"))
+             {
+                 cameraUp = false;
+                 cameraDown = true;
+                 yDistToTravel = player.gameObject.transform.localScale.y + lookAheadDist;
+                 startTime = Time.time;
+             }
+
+             if (cameraLeft && transform.position.x > player.gameObject.transform.position.x - lookAheadDist)
+             {
+                 float distCovered = (Time.time - startTime) * lerpTime;
+                 float fractionOfJourney = distCovered / xDistToTravel;
+                 transform.position = Vector3.Lerp(transform.position, new Vector3(player.gameObject.transform.position.x - lookAheadDist, player.gameObject.transform.position.y, transform.position.z), fractionOfJourney);
+             }
+             else if (cameraRight && transform.position.x < player.gameObject.transform.position.x + lookAheadDist)
+             {
+                 float distCovered = (Time.time - startTime) * lerpTime;
+                 float fractionOfJourney = distCovered / xDistToTravel;
+                 transform.position = Vector3.Lerp(transform.position, new Vector3(player.gameObject.transform.position.x + lookAheadDist, player.gameObject.transform.position.y, transform.position.z), fractionOfJourney);
+             }
+             if (cameraUp && transform.position.y < player.gameObject.transform.position.y + lookAheadDist)
+             {
+                 float distCovered = (Time.time - startTime) * lerpTime;
+                 float fractionOfJourney = distCovered / yDistToTravel;
+                 transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, player.gameObject.transform.position.y + lookAheadDist, transform.position.z), fractionOfJourney);
+             }
+             else if (cameraDown && transform.position.y > player.gameObject.transform.position.y - lookAheadDist)
+             {
+                 float distCovered = (Time.time - startTime) * lerpTime;
+                 float fractionOfJourney = distCovered / yDistToTravel;
+                 transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, player.gameObject.transform.position.y - lookAheadDist, transform.position.z), fractionOfJourney);
+             }
+    }*/
 
         if (enteredBossZone && bossAlive)
         {
@@ -101,5 +107,27 @@ public class FollowPlayer : MonoBehaviour
         {
             freeMovement = true;
         }
+    }
+
+    public void Shake()
+    {
+        StartCoroutine(StartShake());
+    }
+
+    IEnumerator StartShake()
+    {
+        float startTime = Time.unscaledTime;
+        float curXPos = transform.position.x;
+        float curYPos = transform.position.y;
+        float curTimeScale = Time.timeScale;
+        for (float curTime = Time.unscaledTime - startTime; curTime <= shakeTime; curTime = Time.unscaledTime - startTime)
+        {
+            float randX = Random.Range(-shakeIntensity, shakeIntensity);
+            float randY = Random.Range(-shakeIntensity, shakeIntensity);
+            transform.position = new Vector3(curXPos + randX, curYPos + randY, -10);
+            Time.timeScale = 0f;
+            yield return new WaitForSecondsRealtime(.05f);
+        }
+        Time.timeScale = curTimeScale;
     }
 }

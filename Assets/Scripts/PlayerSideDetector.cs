@@ -17,9 +17,8 @@ public class PlayerSideDetector : MonoBehaviour
         
     }
 
-    private void OnTrigger2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log(col.gameObject.tag);
         if (col.gameObject.tag == "doNotPass")
         {
             Debug.Log(col.gameObject.tag);

@@ -42,8 +42,9 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("enemy"))
+        if (col.gameObject.layer == 9 || col.gameObject.layer == 10)
         {
+            Debug.Log(col.gameObject.layer);
             Destroy(gameObject);
         }
     }
