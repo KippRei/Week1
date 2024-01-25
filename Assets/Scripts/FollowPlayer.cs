@@ -109,6 +109,11 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
+    public void MovePlayerToLocation()
+    {
+
+    }
+
     public void Shake()
     {
         StartCoroutine(StartShake());

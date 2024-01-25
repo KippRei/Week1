@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelect : MonoBehaviour
 {
+    [SerializeField] private GameObject loadScreen;
+    [SerializeField] private TextMeshProUGUI loadingPercentage;
     private Vector2 mousePos;
     private TextMeshPro _textMeshPro = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        loadScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -25,25 +28,25 @@ public class LevelSelect : MonoBehaviour
             {
                 _textMeshPro =  hit.gameObject.GetComponentInChildren<TextMeshPro>();
                 _textMeshPro.enabled = true;
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
-                    SceneManager.LoadSceneAsync("Level1");
+                    StartCoroutine(LoadLevel("Level1"));
                 }
             }
             else if (hit.gameObject.name == "Planet2")
             {
                 _textMeshPro = hit.gameObject.GetComponentInChildren<TextMeshPro>();
                 _textMeshPro.enabled = true;
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
-                    Debug.Log("load 2");
+                    StartCoroutine(LoadLevel("Intro Level"));
                 }
             }
             else if (hit.gameObject.name == "Planet3")
             {
                 _textMeshPro = hit.gameObject.GetComponentInChildren<TextMeshPro>();
                 _textMeshPro.enabled = true;
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
                     Debug.Log("load 3");
                 }
@@ -52,7 +55,7 @@ public class LevelSelect : MonoBehaviour
             {
                 _textMeshPro = hit.gameObject.GetComponentInChildren<TextMeshPro>();
                 _textMeshPro.enabled = true;
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
                     Debug.Log("load 4");
                 }
@@ -61,7 +64,7 @@ public class LevelSelect : MonoBehaviour
             {
                 _textMeshPro = hit.gameObject.GetComponentInChildren<TextMeshPro>();
                 _textMeshPro.enabled = true;
-                if (Input.GetButton("Fire1"))
+                if (Input.GetButtonDown("Fire1"))
                 {
                     Debug.Log("load 5");
                 }
@@ -74,5 +77,18 @@ public class LevelSelect : MonoBehaviour
                 _textMeshPro.enabled = false;
             }
         }
+    }
+
+    IEnumerator LoadLevel(string lvlName)
+    {
+        loadScreen.SetActive(true);
+        AsyncOperation loadingLvl = SceneManager.LoadSceneAsync(lvlName);
+
+        while (!loadingLvl.isDone)
+        {
+            loadingPercentage.text = Mathf.Clamp01(loadingLvl.progress / 0.9f) * 100 + " %";
+            yield return null;
+        }
+        loadScreen.SetActive(false);
     }
 }

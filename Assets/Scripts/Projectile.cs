@@ -44,8 +44,7 @@ public class Projectile : MonoBehaviour
     {
         if (col.gameObject.layer == 9 || col.gameObject.layer == 10)
         {
-            Debug.Log(col.gameObject.layer);
-            Destroy(gameObject);
+                Destroy(gameObject);
         }
     }
 

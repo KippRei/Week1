@@ -21,7 +21,6 @@ public class PlayerSideDetector : MonoBehaviour
     {
         if (col.gameObject.tag == "doNotPass")
         {
-            Debug.Log(col.gameObject.tag);
             contact = true;
         }
     }

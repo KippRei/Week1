@@ -8,11 +8,12 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    public bool gameOver = false;
+
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private GameObject loadScreen;
     [SerializeField] private TextMeshProUGUI loadingPercentage;
-    private bool restart = false;
     private bool paused = false;
     private Animator continueBtn;
     private Animator exitBtn;
@@ -30,6 +31,7 @@ public class UIScript : MonoBehaviour
         exitBtn.enabled = false;
         pauseScreen.SetActive(false);
         gameOverScreen.SetActive(false);
+        loadScreen.SetActive(false);
         pointerEventData = new PointerEventData(EventSystem.current);
         gRayCaster = pauseScreen.GetComponent<GraphicRaycaster>();
     }
@@ -47,15 +49,19 @@ public class UIScript : MonoBehaviour
             paused = false;
             PauseGame();
         }
-        if (restart && Input.GetButtonDown("Fire3"))
+        if (gameOver && Input.GetButtonDown("Fire3"))
         {
             StartCoroutine(ReloadLevel());  
         }   
+
+        if (paused)
+        {
+            PauseGame();
+        }
     }
 
     IEnumerator ReloadLevel()
     {
-        Time.timeScale = 1f;
         loadScreen.SetActive(true);
         AsyncOperation loadingLvl = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
 
@@ -85,7 +91,7 @@ public class UIScript : MonoBehaviour
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
-        restart = true;
+        gameOver = true;
     }
 
     public bool GamePaused()

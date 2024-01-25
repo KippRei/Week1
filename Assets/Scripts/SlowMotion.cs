@@ -20,13 +20,13 @@ public class SlowMotion : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        fixedDeltaTime = 0.02f;
+        fixedDeltaTime = Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameLoop.GamePaused())
+        if (!gameLoop.GamePaused() && !gameLoop.gameOver)
         {
             if (Input.GetButtonDown("Fire3") && slowMoAvailable)
             {
@@ -52,6 +52,11 @@ public class SlowMotion : MonoBehaviour
                 }
             }
             Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
-        }      
+        }   
+        if (gameLoop.gameOver)
+        {
+            Time.timeScale = 1.0f;
+            Time.fixedDeltaTime = fixedDeltaTime * Time.timeScale;
+        }
     }
 }

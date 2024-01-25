@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,11 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private int fullHealth;
     private int treasureVal = 0;
+    private bool isStopped = false;
+    private Vector3 lastPos;
 
+    private float testTime;
+    private bool testBool = true;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +43,31 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
         fullHealth = playerHealth;
+        testTime = Time.time;
+        lastPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // TODO: testing player on rails movement
+        if (Time.time - testTime > 0.5 && testBool)
+        {
+            testBool = false;
+            PlayerOnRails(new Vector3(-1.37f, 8.61999989f, 0));
+        }
+
+        if (transform.position == lastPos)
+        {
+            lastPos = transform.position;
+            isStopped = true;
+        }
+        else
+        {
+            lastPos = transform.position;
+            isStopped = false;
+        }
+
         //PlayerRotate();
         PlayerMove();
         float healthValue = (float)playerHealth / (float)fullHealth;
@@ -83,6 +108,21 @@ public class Player : MonoBehaviour
         }
         
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+    }
+
+    public void PlayerOnRails(Vector3 location)
+    {
+        Vector3 moveTo = location;
+        StartCoroutine(PlayerAutoMove(moveTo));
+    }
+
+    IEnumerator PlayerAutoMove(Vector3 location)
+    {
+        while (transform.position != location)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, location, movementSpeed * Time.deltaTime);
+            yield return new WaitForNextFrameUnit();
+        }
     }
 
     void PlayerRotate()
@@ -147,5 +187,10 @@ public class Player : MonoBehaviour
     private void PlayerHit()
     {
         followCam.Shake();
+    }
+
+    public bool IsStopped()
+    {
+        return isStopped;
     }
 }

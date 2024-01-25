@@ -12,6 +12,7 @@ TagManager:
   - doNotPass
   - treasure
   - playerShield
+  - friend
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Player
   - Destructrable Terrain
   - Enemy
-  - 
+  - Friend
   - 
   - 
   - 
