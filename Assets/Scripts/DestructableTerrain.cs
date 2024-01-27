@@ -26,10 +26,11 @@ public class DestructableTerrain : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.tag == "playerProjectile")
+        if (col.gameObject.tag == "playerProjectile")
         {
+            
             terrainLife -= 1;
         }
     }

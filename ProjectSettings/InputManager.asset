@@ -582,11 +582,11 @@ InputManager:
     axis: 5
     joyNum: 0
   - serializedVersion: 3
-    m_Name: pause
+    m_Name: axe
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: escape
+    positiveButton: e
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

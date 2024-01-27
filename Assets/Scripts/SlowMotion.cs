@@ -9,7 +9,7 @@ public class SlowMotion : MonoBehaviour
     public float slowMoSpeed = 0.2f;
     public float slowMoRegen = 0.002f;
     public float slowMoDrain = 0.0015f;
-    public Slider slowMoSlider = null;
+    public Slider slowMoSlider;
     public Player player;
     
 
@@ -28,19 +28,21 @@ public class SlowMotion : MonoBehaviour
     {
         if (!gameLoop.GamePaused() && !gameLoop.gameOver)
         {
-            if (Input.GetButtonDown("Fire3") && slowMoAvailable)
+            if (Input.GetButton("Fire3") && slowMoAvailable)
             {
+                player.trail.enabled = true;
                 Time.timeScale = slowMoSpeed;
                 slowMoSlider.value -= slowMoDrain;
                 player.invincible = true;
-                if (slowMoSlider.value < 0.01 || Input.GetButtonUp("Fire1"))
+                if (slowMoSlider.value < 0.01)
                 {
                     slowMoAvailable = false;
                 }
             }
-            if (Input.GetButtonUp("Fire3"))
+            if (!Input.GetButton("Fire3") || !slowMoAvailable)
             {
-                Time.timeScale = 1.0f;
+                player.trail.enabled = false;
+                Time.timeScale = 1f;
                 player.invincible = false;
                 if (slowMoSlider.value < 1f)
                 {

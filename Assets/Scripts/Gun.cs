@@ -14,6 +14,7 @@ public class Gun : MonoBehaviour
 {
     public Player player;
     public GameObject projectile;
+    public Axe axe;
     public GameObject terrainBlock;
     public LockOnProjectile lockOnProjectile;
     public float nextFire = 0.18f; // Time before next normal shot is allowed
@@ -45,13 +46,26 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        myTime += Time.deltaTime;
-        mySuper += Time.deltaTime;
+        if (player.GetPlayerInputEnabled())
+        {
+            myTime += Time.deltaTime;
+            mySuper += Time.deltaTime;
 
-        CheckSlowMoButton();
-        CheckShieldButton();
-        CheckFireButton();
-        CheckSuperButton();
+            CheckSlowMoButton();
+            CheckShieldButton();
+            CheckFireButton();
+            CheckSwingButton();
+            CheckSuperButton();
+        }
+    }
+
+    private void CheckSwingButton()
+    {
+        if (Input.GetButtonDown("axe"))
+        {
+            GunDirection();
+            axe.SwingAxe(transform.position, transform.rotation);
+        }
     }
 
     private void CheckSuperButton()
@@ -136,7 +150,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetButtonUp("Fire3"))
         {
-            player.playerShifted = false; // Let's player know to reset phase shift counter (default 1 phase shift per slow-mo button press)
+            player.playerShifts = 0; // Let's player know to reset phase shift counter (default 1 phase shift per slow-mo button press)
         }
     }
 

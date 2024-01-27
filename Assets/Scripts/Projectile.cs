@@ -40,19 +40,19 @@ public class Projectile : MonoBehaviour
         rb.AddForce(transform.up * bulletVelocity);
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.layer == 9 || col.gameObject.layer == 10)
         {
-                Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
-  /*  private void OnDisable()
-    {
-        trail.transform.parent = null;
-        trail.autodestruct = true;
-        Destroy(trail.gameObject, 0.6f);
-        Destroy(gameObject);
-    }*/
+    /*  private void OnDisable()
+      {
+          trail.transform.parent = null;
+          trail.autodestruct = true;
+          Destroy(trail.gameObject, 0.6f);
+          Destroy(gameObject);
+      }*/
 }

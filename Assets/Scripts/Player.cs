@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
 
     public float movementSpeed = 1;
-    public bool playerShifted = false;
+    public int playerShifts = 0;
     public float accel = 1f;
     public float decel = 2f;
     public float maxSpeed = 3f;
@@ -21,25 +22,29 @@ public class Player : MonoBehaviour
     public bool invincible = false;
     public AudioClip playerHitSound;
     public float freezeOnHit = 1f;
+    public TrailRenderer trail;
 
     [SerializeField] private UIScript uiScript;
     [SerializeField] private PlayerSideDetector leftSide;
     [SerializeField] private PlayerSideDetector rightSide;
     [SerializeField] private PlayerSideDetector upSide;
     [SerializeField] private PlayerSideDetector downSide;
+    [SerializeField] private int numOfShifts = 1;
     private AudioSource audioSource;
     private Rigidbody2D rb;
     private int fullHealth;
     private int treasureVal = 0;
     private bool isStopped = false;
     private Vector3 lastPos;
-
+    private bool playerControlEnabled = true;
     private float testTime;
     private bool testBool = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        trail = GetComponent<TrailRenderer>();
+        trail.enabled = false;
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
         fullHealth = playerHealth;
@@ -50,11 +55,28 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO: testing player on rails movement
-        if (Time.time - testTime > 0.5 && testBool)
+        /*        // TODO: testing player on rails movement
+                if (Time.time - testTime > 0.5 && testBool)
+                {
+                    testBool = false;
+                    PlayerOnRails(new Vector3(-1.37f, 8.61999989f, 0));
+                }*/
+        if (!Input.GetButton("left") && !Input.GetButton("right"))
         {
-            testBool = false;
-            PlayerOnRails(new Vector3(-1.37f, 8.61999989f, 0));
+            if (rb.velocity.x < deadzone && rb.velocity.x >= 0 || rb.velocity.x > -deadzone && rb.velocity.x <= 0)
+            {
+                Debug.Log("deadzone x stop");
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
+        }
+
+        if (!Input.GetButton("up") && !Input.GetButton("down"))
+        {
+            if (rb.velocity.y < deadzone && rb.velocity.y >= 0 || rb.velocity.y > -deadzone && rb.velocity.y <= 0)
+            {
+                Debug.Log("deadzone y stop");
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
         }
 
         if (transform.position == lastPos)
@@ -67,9 +89,13 @@ public class Player : MonoBehaviour
             lastPos = transform.position;
             isStopped = false;
         }
+        
+        if (playerControlEnabled)
+        {
+            //PlayerRotate();
+            PlayerMove();
+        }
 
-        //PlayerRotate();
-        PlayerMove();
         float healthValue = (float)playerHealth / (float)fullHealth;
         healthBar.value = healthValue;
 
@@ -90,23 +116,49 @@ public class Player : MonoBehaviour
         Vector3 camPos = Camera.main.WorldToViewportPoint(transform.position);
         Vector3 playerPosition = gameObject.transform.position;
 
-        if (Input.GetButton("left") && camPos.x > 0 && !leftSide.contact)
+        /*        if (Input.GetButton("left") && camPos.x > 0 && !leftSide.contact)
+                {
+                    transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
+                }
+                else if (Input.GetButton("right") && camPos.x < 1 && !rightSide.contact)
+                {
+                    transform.Translate(movementSpeed * Time.deltaTime, 0, 0);
+                }
+                if (Input.GetButton("up") && camPos.y < 1 && !upSide.contact)
+                {
+                    transform.Translate(0, movementSpeed * Time.deltaTime, 0);
+                }
+                else if (Input.GetButton("down") && camPos.y > 0 && !downSide.contact)
+                {
+                    transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
+                }*/
+
+        if (Input.GetButton("left") && camPos.x > 0 && !leftSide.contact && rb.velocity.x > -maxSpeed)
         {
-            transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
+            rb.AddForce(new Vector2(-accel, 0));
         }
-        else if (Input.GetButton("right") && camPos.x < 1 && !rightSide.contact)
+        else if (Input.GetButton("right") && camPos.x < 1 && !rightSide.contact && rb.velocity.x < maxSpeed)
         {
-            transform.Translate(movementSpeed * Time.deltaTime, 0, 0);
+            rb.AddForce(new Vector2(accel, 0));
         }
-        if (Input.GetButton("up") && camPos.y < 1 && !upSide.contact)
+        if (Input.GetButton("up") && camPos.y < 1 && !upSide.contact && rb.velocity.y < maxSpeed)
         {
-            transform.Translate(0, movementSpeed * Time.deltaTime, 0);
+            rb.AddForce(new Vector2(0, accel));
         }
-        else if (Input.GetButton("down") && camPos.y > 0 && !downSide.contact)
+        else if (Input.GetButton("down") && camPos.y > 0 && !downSide.contact && rb.velocity.y > -maxSpeed)
         {
-            transform.Translate(0, -movementSpeed * Time.deltaTime, 0);
+            rb.AddForce(new Vector2(0, -accel));
         }
-        
+
+/*        if (Input.GetButtonUp("left") || Input.GetButtonUp("right"))
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        if (Input.GetButtonUp("up") || Input.GetButtonUp("down"))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
+*/
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
     }
 
@@ -143,11 +195,13 @@ public class Player : MonoBehaviour
 
     public void PlayerShift()
     {
-        if (Input.GetButtonDown("Fire1") && !playerShifted)
+        if (Input.GetButtonDown("Fire1") && playerShifts < numOfShifts)
         {
+            trail.enabled = true;
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePos;
-            playerShifted = true;
+            playerShifts += 1;
+            rb.velocity = new Vector2(0, 0);
         }
     }
 
@@ -192,5 +246,16 @@ public class Player : MonoBehaviour
     public bool IsStopped()
     {
         return isStopped;
+    }
+
+    // Getters and Setters
+    public bool GetPlayerInputEnabled()
+    {
+        return playerControlEnabled;
+    }
+
+    public void SetPlayerInputEnabled(bool set)
+    {
+        playerControlEnabled = set;
     }
 }

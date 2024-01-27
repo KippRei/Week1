@@ -1,0 +1,12 @@
+        player>>Hi Buddy.
+        buddy>>Hi Tran.
+        player>>How's the digging today?
+        buddy>>Can't complain, there's supposed to be a big mineral deposit somewhere down there so that's... exciting.
+        player>>Hey, you ever wonder what it'd be like to be a Warrior? Clearing planets, taking out pirates, man that's the life.
+        player>>I'm so tired of being stuck on the surface. Digging, digging, it's like I'm digging my own grave.
+        player>>I can do so much more than this if someone just gave me a chance.
+        buddy>>Sure Tran, you can mine them to death. I believe in you friend, I really do, but it takes a lot more than daydreams to fight.
+        buddy>>How would you get clearance for all the additions? And even then how would you afford them?
+        buddy>>Boosters, missiles, shields, and short jump drives are really expensive.
+        player>>I'd figure it out, I just need a chance...
+        bossman1>>Hey! Less talking more mining! We've been here looking for this mineral deposit too long already!
